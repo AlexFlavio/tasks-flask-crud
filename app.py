@@ -14,7 +14,7 @@ def create_task():
     task_id_control+=1
     tasks.append(new_task)
 
-    return jsonify({"message":"New task created"})
+    return jsonify({"message":"New task created", "id": new_task.id})
 
 
 @app.route("/tasks",methods=["GET"])
@@ -28,7 +28,7 @@ def retriave_task(id):
         if task.id == id:
             return jsonify(task.to_dict())
 
-    return jsonify({"message":"task not found"},404)
+    return jsonify({"message":"task not found"}),404
 
 
 @app.route("/tasks/<int:id>",methods=["PUT"])
@@ -39,7 +39,7 @@ def update_task(id):
             task= t
 
     if task == None:
-        return jsonify({"message":"task not found"},404)
+        return jsonify({"message":"task not found"}),404
     
     data = request.get_json()
     task.title = data["title"]
@@ -57,7 +57,7 @@ def delete_task(id):
             task= t
 
     if task == None:
-        return jsonify({"message":"task not found"},404)
+        return jsonify({"message":"task not found"}),404
     
     tasks.remove(task)
     return jsonify({"message": "task deleted successfully"})
